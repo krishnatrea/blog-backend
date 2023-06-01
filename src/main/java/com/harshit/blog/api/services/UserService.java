@@ -3,6 +3,7 @@ package com.harshit.blog.api.services;
 import java.util.List;
 
 import com.harshit.blog.api.payloads.UserDto;
+import org.springframework.stereotype.Service;
 
 public interface UserService {
 	

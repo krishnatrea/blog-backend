@@ -3,6 +3,7 @@ package com.harshit.blog.api.services.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,12 +17,15 @@ import com.harshit.blog.api.exceptions.*;
 public class UserServiceImpl implements UserService {
 	
 	@Autowired
-	private UserRepository userRepository; 
+	private UserRepository userRepository;
+
+	@Autowired
+	private ModelMapper modelMapper;
 	
 	@Override
 	public void deleteUser(Integer userId) {
 		User user = this.userRepository.findById(userId)
-				.orElseThrow(() -> new ResourceNotFoundException("User"," id ", userId));
+				.orElseThrow(() -> new ResourceNotFoundException("User"," id ", userId.toString()));
 		userRepository.delete(user);
 		return;
 	}
@@ -35,7 +39,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public UserDto updateUser(UserDto user, Integer userId) {
-		User findUser = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User"," id ", userId));
+		User findUser = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User"," id ", userId.toString()));
 		findUser.setAbout(user.getAbout());
 		findUser.setEmail(user.getEmail());
 		findUser.setName(user.getName());
@@ -47,7 +51,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserDto getUserById(Integer userId) {
 		User user = userRepository.findById(userId)
-				.orElseThrow(() -> new ResourceNotFoundException("User"," id ", userId));
+				.orElseThrow(() -> new ResourceNotFoundException("User"," id ", userId.toString()));
 		return this.userToDto(user);
 	}
 
@@ -59,22 +63,12 @@ public class UserServiceImpl implements UserService {
 	}
 	
 	private User dtoToUser(UserDto userDto) {
-		User user = new User();
-		user.setId(userDto.getId());
-		user.setAbout(userDto.getAbout());
-		user.setEmail(userDto.getEmail());
-		user.setName(userDto.getName());
-		user.setPassword(userDto.getPassword());
+		User user = modelMapper.map(userDto, User.class);
 		return user;
 	}
 	
 	private UserDto userToDto(User user) {
-		UserDto userDto = new UserDto();
-		userDto.setId(user.getId());
-		userDto.setAbout(user.getAbout());
-		userDto.setEmail(user.getEmail());
-		userDto.setName(user.getName());
-		userDto.setPassword(user.getPassword());
+		UserDto userDto =modelMapper.map(user, UserDto.class);
 		return userDto;
 	}
 
