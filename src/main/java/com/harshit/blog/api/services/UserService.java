@@ -1,10 +1,8 @@
 package com.harshit.blog.api.services;
 
-import java.util.List;
-
 import com.harshit.blog.api.payloads.UserDto;
-import org.springframework.stereotype.Service;
 
+import java.util.List;
 public interface UserService {
 	
 	UserDto createUser(UserDto user);

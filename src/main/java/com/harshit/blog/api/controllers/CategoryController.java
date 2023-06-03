@@ -2,6 +2,7 @@ package com.harshit.blog.api.controllers;
 
 import com.harshit.blog.api.payloads.CategoryDto;
 import com.harshit.blog.api.services.CategoryService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,13 +18,13 @@ public class CategoryController {
     private CategoryService categoryService;
 
     @PostMapping("/")
-    public ResponseEntity<CategoryDto> createCategory(@RequestBody CategoryDto categoryDto){
-       return new  ResponseEntity<CategoryDto>(categoryService.createCategory(categoryDto), HttpStatus.CREATED);
+    public ResponseEntity<CategoryDto> createCategory(@Valid @RequestBody CategoryDto categoryDto) {
+        return new ResponseEntity<CategoryDto>(categoryService.createCategory(categoryDto), HttpStatus.CREATED);
     }
 
     @PutMapping("/{categoryId}")
-    public  ResponseEntity<CategoryDto> updateCategory(@RequestBody CategoryDto categoryDto, @PathVariable Integer categoryId) {
-        return new ResponseEntity<CategoryDto>(categoryService.updateCategory(categoryDto,categoryId), HttpStatus.OK);
+    public ResponseEntity<CategoryDto> updateCategory(@Valid @RequestBody CategoryDto categoryDto, @PathVariable Integer categoryId) {
+        return new ResponseEntity<CategoryDto>(categoryService.updateCategory(categoryDto, categoryId), HttpStatus.OK);
 
     }
 
